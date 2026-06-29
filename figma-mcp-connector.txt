@@ -1,0 +1,66 @@
+FIGMA MCP CONNECTOR
+===================
+File:     Ibuclin-EM
+File ID:  zBwO0y0aFg9kMlj3tp62uY
+Node ID:  1609:19911
+URL:      https://www.figma.com/design/zBwO0y0aFg9kMlj3tp62uY/Ibuclin-EM?node-id=1609-19911
+
+---
+
+MCP SERVER CONFIGURATION (claude_desktop_config.json / .mcp.json)
+------------------------------------------------------------------
+{
+  "mcpServers": {
+    "figma": {
+      "command": "npx",
+      "args": ["-y", "figma-developer-mcp", "--figma-api-key", "<YOUR_FIGMA_API_KEY>"],
+      "env": {}
+    }
+  }
+}
+
+---
+
+AVAILABLE MCP TOOLS (once server is running)
+--------------------------------------------
+get_figma_data
+  - fileKey:  zBwO0y0aFg9kMlj3tp62uY
+  - nodeId:   1609:19911
+  - depth:    (optional, e.g. 3 for shallow fetch, omit for full tree)
+
+download_figma_images
+  - fileKey:  zBwO0y0aFg9kMlj3tp62uY
+  - nodes:    [{ "nodeId": "1609:19911", "fileName": "ibuclin-em-node" }]
+  - localPath: ./public/figma-assets/
+
+---
+
+USAGE IN CLAUDE CODE SKILL
+---------------------------
+Trigger phrase:
+  Extract the design specifications for [component name] from Figma MCP
+  and implement it pixel-perfectly. /figma-mcp
+
+The skill will call get_figma_data with the file key and node ID above,
+extract design tokens (colors, typography, spacing, layout), then
+implement the component to spec.
+
+---
+
+DIRECT FIGMA REST API (fallback without MCP)
+--------------------------------------------
+GET https://api.figma.com/v1/files/zBwO0y0aFg9kMlj3tp62uY/nodes?ids=1609:19911
+Headers:
+  X-Figma-Token: <YOUR_FIGMA_API_KEY>
+
+GET https://api.figma.com/v1/images/zBwO0y0aFg9kMlj3tp62uY?ids=1609:19911&format=png&scale=2
+Headers:
+  X-Figma-Token: <YOUR_FIGMA_API_KEY>
+
+---
+
+NOTES
+-----
+- Replace <YOUR_FIGMA_API_KEY> with a token from https://www.figma.com/developers/api#access-tokens
+- Node ID in URLs uses dashes (1609-19911); Figma API uses colons (1609:19911)
+- figma-developer-mcp package: https://www.npmjs.com/package/figma-developer-mcp
